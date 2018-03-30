@@ -1,0 +1,37 @@
+
+image: node:8
+
+before_script:
+
+#  install paketnode js
+  # - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+  # - echo --quiet -y "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+  # - apt-get update && apt-get install yarn
+  # - yarn global add vue-cli
+  - npm i -g vue-cli
+
+stages:
+  - test
+  - deploy
+
+#deploy debug
+test:
+  stage: test
+  script:
+    # - yarn install
+    - npm i
+    - npm run build
+  artifacts:
+    paths:
+    - dist/
+
+#deploy build production
+deploy:
+  stage: deploy
+  script:
+    # - yarn install
+    - npm i
+    - npm run build
+  artifacts:
+    paths:
+    - dist/
