@@ -1,15 +1,18 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HelloWorld from '@/components/HelloWorld';
 
 Vue.use(Router);
 
+const BeritaFeedHome = () => import(/* webpackChunkName: "home-berita" */'@/components/beritafeeds/BeritaFeeds');
+
+const baseRouter = [
+  {
+    path: '/',
+    name: 'BeritaFeeds',
+    component: BeritaFeedHome,
+  },
+];
+
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld,
-    },
-  ],
+  routes: baseRouter,
 });
