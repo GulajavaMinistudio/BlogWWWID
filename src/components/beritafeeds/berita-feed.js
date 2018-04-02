@@ -9,8 +9,14 @@ import {
   KEY_STORAGE_BERITAFEEDMODEL,
 } from '@/components/konstans/Konstans';
 
+// import komponen untuk list artikel
+const ListItemComponent = () => import(/* webpackChunkName: "list-item-artikel" */'@/components/beritafeeds/ListItemFeeds');
+
 export default {
   name: 'BeritaFeedComponent',
+  components: {
+    'list-item': ListItemComponent,
+  },
   data() {
     return {
       beritafeeds: [],
@@ -19,6 +25,8 @@ export default {
       beritaFeedModel: new BeritaFeedsModel(),
       listKategoriArtikel: [],
       localstorageHelper: new LocalStorageHelpers(),
+      parserDaftarArtikel: new ParserDaftarArtikel(),
+      parserKategori: new ParserKategori(),
     };
   },
   methods: {
@@ -36,21 +44,22 @@ export default {
           const feedItem = new FeedItem(feeds.url, feeds.title, feeds.link,
             feeds.author, feeds.description, feeds.image);
 
-          this.beritafeeds = ParserDaftarArtikel.parseSusunArtikel(datajson.items);
+          this.beritafeeds = this.parserDaftarArtikel.parseSusunArtikel(datajson.items);
           // susun model artikel yang sudah baku
           this.beritaFeedModel = new BeritaFeedsModel(datajson.status, feedItem, this.beritafeeds);
           resolve(true);
         }))
         .then(() => new Promise((resolve) => {
           // susun daftar kategori artikel
-          this.listKategoriArtikel = ParserKategori
+          this.listKategoriArtikel = this.parserKategori
             .parseKategoriSemuaArtikel(this.beritaFeedModel.items);
           resolve(true);
         }))
         .then(() => {
           this.cekHasilGetBerita();
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           this.listKategoriArtikel = [];
           this.beritafeeds = [];
           this.cekHasilGetBerita();
@@ -71,9 +80,10 @@ export default {
     },
     simpanFeedBerita() {
       const promiseSaveBerita = new Promise((resolve) => {
-        this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_FEEDS, this.beritafeeds);
+        this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_FEEDS,
+          JSON.stringify(this.beritafeeds));
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_BERITAFEEDMODEL,
-          this.beritaFeedModel);
+          JSON.stringify(this.beritaFeedModel));
         resolve(true);
       });
 
@@ -88,8 +98,11 @@ export default {
     },
     getFeedBeritaCached() {
       const promiseGetBeritaCached = new Promise((resolve) => {
-        const beritacache = this.localstorageHelper.getDataWithKey(KEY_STORAGE_FEEDS);
-        this.beritaFeedModel = this.localstorageHelper.getDataWithKey(KEY_STORAGE_BERITAFEEDMODEL);
+        const beritacacheString = this.localstorageHelper.getDataWithKey(KEY_STORAGE_FEEDS);
+        const beritacache = JSON.parse(beritacacheString);
+        const beritaFeedModelString = this.localstorageHelper
+          .getDataWithKey(KEY_STORAGE_BERITAFEEDMODEL);
+        this.beritaFeedModel = JSON.parse(beritaFeedModelString);
         resolve(beritacache);
       });
 

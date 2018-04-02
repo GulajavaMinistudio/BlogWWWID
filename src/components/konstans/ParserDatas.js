@@ -14,18 +14,20 @@ class ParserTanggal {
 }
 
 class ParserDaftarArtikel {
+    // array artikel baku
     artikelBaku = [];
 
     /**
      * konversi tanggal yang ada di dalam artikel
      * @param {Array} listArtikel daftar artikel dalam bentuk array
      */
-    static parseSusunArtikel(listArtikel = []) {
+    parseSusunArtikel(listArtikel = []) {
       const parserTanggal = new ParserTanggal();
       const panjangArtikel = listArtikel.length;
       for (let i = 0; i < panjangArtikel; i += 1) {
         const artikel = listArtikel[i];
         const tanggalbaku = parserTanggal.parseTanggalKeBaku(artikel.pubDate);
+        const artikelDescBersih = ParserDaftarArtikel.extractTextFromHtml(artikel.description);
         const newsModel = new ArtikelModel(
           artikel.title,
           tanggalbaku,
@@ -33,13 +35,19 @@ class ParserDaftarArtikel {
           artikel.guid,
           artikel.author,
           artikel.thumbnail,
-          artikel.description,
+          artikelDescBersih,
           artikel.content,
           artikel.categories,
         );
-        this.artikelBaku = this.artikelBaku.push(newsModel);
+        this.artikelBaku.push(newsModel);
       }
       return this.artikelBaku;
+    }
+
+    static extractTextFromHtml(stringHtml) {
+      // const artikelCleanHTML = $(stringHtml).text();
+      const artikelCleanHTML = stringHtml.replace(/<[^>]*>?/g, '');
+      return artikelCleanHTML;
     }
 }
 
@@ -50,7 +58,7 @@ class ParserKategori {
      * @description parse array kategori artikel ke dalam bentuk satu array saja
      * @param {Array} listArtikel daftar artikel
      */
-    static parseKategoriSemuaArtikel(listArtikel = []) {
+    parseKategoriSemuaArtikel(listArtikel = []) {
       const panjangArtikel = listArtikel.length;
       for (let i = 0; i < panjangArtikel; i += 1) {
         const artikel = listArtikel[i];
@@ -58,7 +66,7 @@ class ParserKategori {
         const panjangKategori = categories.length;
         for (let j = 0; j < panjangKategori; j += 1) {
           const namaKategori = categories[j];
-          this.listKategori = this.listKategori.push(namaKategori);
+          this.listKategori.push(namaKategori);
         }
       }
       return this.listKategori;

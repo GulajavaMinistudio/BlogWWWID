@@ -4,14 +4,8 @@
         Daftar Artikel dari Blog WWWID
     </div>
     <div>
-        <ul>
-            <li v-for="berita in beritafeedscache">
-                <div>
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                </div>
-            </li>
-        </ul>
+        <div v-for="berita in beritafeeds">
+            <list-item v-bind:propsArtikelItem="berita"></list-item>
+        </div>
     </div>
 </div>
