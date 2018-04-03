@@ -12,10 +12,13 @@ import {
 // import komponen untuk list artikel
 const ListItemComponent = () => import(/* webpackChunkName: "list-item-artikel" */'@/components/beritafeeds/ListItemFeeds');
 
+const HeaderComponent = () => import(/* webpackChunkName: "header-halaman-blog-feed" */'@/components/sharedscomponent/HeaderWeb');
+
 export default {
   name: 'BeritaFeedComponent',
   components: {
     'list-item': ListItemComponent,
+    'header-web': HeaderComponent,
   },
   data() {
     return {
@@ -150,7 +153,6 @@ export default {
   mounted() {
     // cek status local storage apakah kompatibel atau tidak
     this.localstorageHelper.checkLocalStorageCompatible();
-
     // ambil data dari server
     this.getBeritaFeeds();
   },

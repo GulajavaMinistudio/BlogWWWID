@@ -16,7 +16,9 @@ export default {
     };
   },
   methods: {
+    navigasiDetailHalaman() {
 
+    },
   },
   computed: {
 
