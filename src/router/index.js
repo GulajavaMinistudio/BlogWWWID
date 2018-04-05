@@ -14,7 +14,7 @@ const baseRouter = [
     component: BeritaFeedHome,
   },
   {
-    path: '/detail/:idtitle/:judulhalaman',
+    path: '/detail/:idberita/:judulhalaman',
     name: 'BeritaDetail',
     component: BeritaDetail,
   },
