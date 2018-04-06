@@ -4,7 +4,7 @@
     </div>
     <div>
         <div v-for="berita in beritafeeds">
-            <list-item v-bind:propsArtikelItem="berita"></list-item>
+            <list-item v-bind:propsArtikelItem="berita" v-on:click="handle"></list-item>
         </div>
     </div>
 </div>

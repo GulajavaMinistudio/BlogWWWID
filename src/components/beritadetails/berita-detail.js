@@ -20,9 +20,38 @@ export default {
     return {
       idberita: this.$route.params.idberita,
       judulhalaman: this.$route.params.judulhalaman,
+      artikelModel: {},
+      beritafeeds: [],
+      beritafeedscache: [],
+      beritaFeedModel: new BeritaFeedsModel(),
+      localstorageHelper: new LocalStorageHelpers(),
+      parserDaftarArtikel: new ParserDaftarArtikel(),
+      parserKategori: new ParserKategori(),
     };
   },
   methods: {
+    getBeritaCached() {
+      const promiseGetBeritaCached = new Promise((resolve) => {
+        const beritaFeedModelString = this.localstorageHelper
+          .getDataWithKey(KEY_STORAGE_BERITAFEEDMODEL);
+        const beritamodel = JSON.parse(beritaFeedModelString);
+        resolve(beritamodel);
+      });
+
+      promiseGetBeritaCached.then((beritamodel) => {
+        if (beritamodel) {
+          this.beritaFeedModel = beritamodel;
+          this.beritafeeds = this.beritaFeedModel.items;
+          this.getDetailBeritaCached();
+        } else {
+          this.getDaftarBerita();
+        }
+      })
+        .catch((err) => {
+          console.log(err);
+          this.getDaftarBerita();
+        });
+    },
     getDaftarBerita() {
 
     },
@@ -32,14 +61,12 @@ export default {
     simpanFeedBerita() {
 
     },
-    getBeritaCached() {
-
-    },
     simpanFeedKategoriBerita() {
 
     },
     getDetailBeritaCached() {
-
+      this.artikelModel = this.beritafeeds[this.idberita];
+      console.log(this.artikelModel);
     },
   },
   computed: {
