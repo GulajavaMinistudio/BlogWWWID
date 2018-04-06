@@ -7,10 +7,25 @@ import {
   BASE_URLS, PARAM_REQUEST_FEEDS,
   KEY_STORAGE_FEEDS, KEY_STORAGE_TAG_CATEGORY,
   KEY_STORAGE_BERITAFEEDMODEL,
+  BATAS_CACHE_5MENIT, KEY_MILIS_WAKTU_DISIMPAN,
 } from '@/components/konstans/Konstans';
+
+// import komponen untuk list artikel
+const ListItemComponent = () => import(/* webpackChunkName: "list-item-artikel" */'@/components/beritafeeds/ListItemFeeds');
+
+const HeaderComponent = () => import(/* webpackChunkName: "header-halaman-blog-feed" */'@/components/sharedscomponent/HeaderWeb');
+
+// ambil berita dari cache terlebih dahulu
+// jika berita di cache kosong, maka ambil dari internet
+// kemudian simpan ke cache
+// dan ambil dari cache lagi
 
 export default {
   name: 'BeritaFeedComponent',
+  components: {
+    'list-item': ListItemComponent,
+    'header-web': HeaderComponent,
+  },
   data() {
     return {
       beritafeeds: [],
@@ -19,9 +34,38 @@ export default {
       beritaFeedModel: new BeritaFeedsModel(),
       listKategoriArtikel: [],
       localstorageHelper: new LocalStorageHelpers(),
+      parserDaftarArtikel: new ParserDaftarArtikel(),
+      parserKategori: new ParserKategori(),
     };
   },
   methods: {
+    /**
+     * Ambil daftar berita yang tersimpan di dalam cache
+     */
+    getFeedBeritaCached() {
+      const promiseGetBeritaCached = new Promise((resolve) => {
+        const beritacacheString = this.localstorageHelper.getDataWithKey(KEY_STORAGE_FEEDS);
+        const beritacache = JSON.parse(beritacacheString);
+        const beritaFeedModelString = this.localstorageHelper
+          .getDataWithKey(KEY_STORAGE_BERITAFEEDMODEL);
+        this.beritaFeedModel = JSON.parse(beritaFeedModelString);
+        resolve(beritacache);
+      });
+
+      promiseGetBeritaCached
+        .then((beritacached) => {
+          if (beritacached && beritacached.length > 0) {
+            this.beritafeeds = beritacached;
+            this.getCekWaktuCached();
+          } else {
+            this.getBeritaFeeds();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.getBeritaFeeds();
+        });
+    },
     /**
      * Ambil daftar berita dari server Medium WWWID
      */
@@ -36,21 +80,22 @@ export default {
           const feedItem = new FeedItem(feeds.url, feeds.title, feeds.link,
             feeds.author, feeds.description, feeds.image);
 
-          this.beritafeeds = ParserDaftarArtikel.parseSusunArtikel(datajson.items);
+          this.beritafeeds = this.parserDaftarArtikel.parseSusunArtikel(datajson.items);
           // susun model artikel yang sudah baku
           this.beritaFeedModel = new BeritaFeedsModel(datajson.status, feedItem, this.beritafeeds);
           resolve(true);
         }))
         .then(() => new Promise((resolve) => {
           // susun daftar kategori artikel
-          this.listKategoriArtikel = ParserKategori
+          this.listKategoriArtikel = this.parserKategori
             .parseKategoriSemuaArtikel(this.beritaFeedModel.items);
           resolve(true);
         }))
         .then(() => {
           this.cekHasilGetBerita();
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           this.listKategoriArtikel = [];
           this.beritafeeds = [];
           this.cekHasilGetBerita();
@@ -65,15 +110,17 @@ export default {
 
       if (this.beritafeeds && this.beritafeeds.length > 0) {
         this.simpanFeedBerita();
+        this.simpanWaktuCached();
       } else {
         this.getFeedBeritaCached();
       }
     },
     simpanFeedBerita() {
       const promiseSaveBerita = new Promise((resolve) => {
-        this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_FEEDS, this.beritafeeds);
+        this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_FEEDS,
+          JSON.stringify(this.beritafeeds));
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_BERITAFEEDMODEL,
-          this.beritaFeedModel);
+          JSON.stringify(this.beritaFeedModel));
         resolve(true);
       });
 
@@ -81,21 +128,6 @@ export default {
         .then(() => {
           // sukses simpan data ke local storage
           this.getFeedBeritaCached();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    getFeedBeritaCached() {
-      const promiseGetBeritaCached = new Promise((resolve) => {
-        const beritacache = this.localstorageHelper.getDataWithKey(KEY_STORAGE_FEEDS);
-        this.beritaFeedModel = this.localstorageHelper.getDataWithKey(KEY_STORAGE_BERITAFEEDMODEL);
-        resolve(beritacache);
-      });
-
-      promiseGetBeritaCached
-        .then((beritacached) => {
-          this.beritafeeds = beritacached;
         })
         .catch((err) => {
           console.log(err);
@@ -130,6 +162,48 @@ export default {
           console.log(err);
         });
     },
+    simpanWaktuCached() {
+      const saveWaktuPromised = new Promise((resolve) => {
+        const tanggalWaktu = new Date().getTime();
+        this.localstorageHelper.addDataLocalStorage(KEY_MILIS_WAKTU_DISIMPAN,
+          tanggalWaktu.toString());
+        resolve('true');
+      });
+
+      saveWaktuPromised.then(() => {
+        // tidak melakukan apa apa
+      })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    /**
+     * Cek dan periksa waktu data disimpan, jika sudah lebih dari 5 menit, maka
+     * ambil data yang baru lagi
+     */
+    getCekWaktuCached() {
+      const getWaktuCachedPromised = new Promise((resolve) => {
+        const waktucached = this.localstorageHelper.getDataWithKey(KEY_MILIS_WAKTU_DISIMPAN);
+        const waktuCachedLong = Number(waktucached);
+        resolve(waktuCachedLong);
+      });
+
+      getWaktuCachedPromised.then((waktuCache) => {
+        const waktuSekarang = new Date().getTime();
+        const waktuSelisih = waktuSekarang - waktuCache;
+        if (waktuSelisih > BATAS_CACHE_5MENIT) {
+          console.log('cache sudah lebih dari 5 menit');
+          this.getBeritaFeeds();
+        }
+      })
+        .catch((error) => {
+          console.log(error);
+          this.getBeritaFeeds();
+        });
+    },
+    navigasiHalamanDetail(artikelmodel) {
+
+    },
   },
   computed: {
 
@@ -137,8 +211,7 @@ export default {
   mounted() {
     // cek status local storage apakah kompatibel atau tidak
     this.localstorageHelper.checkLocalStorageCompatible();
-
     // ambil data dari server
-    this.getBeritaFeeds();
+    this.getFeedBeritaCached();
   },
 };

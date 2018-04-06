@@ -1,17 +1,10 @@
 <div>
-    <h1>Berita Feed disini</h1>
     <div>
-        Daftar Artikel dari Blog WWWID
+        <header-web></header-web>
     </div>
     <div>
-        <ul>
-            <li v-for="berita in beritafeedscache">
-                <div>
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                </div>
-            </li>
-        </ul>
+        <div v-for="berita in beritafeeds">
+            <list-item v-bind:propsArtikelItem="berita" v-on:click="handle"></list-item>
+        </div>
     </div>
 </div>
