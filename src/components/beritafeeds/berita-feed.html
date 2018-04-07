@@ -3,8 +3,8 @@
         <header-web></header-web>
     </div>
     <div>
-        <div v-for="berita in beritafeeds">
-            <list-item v-bind:propsArtikelItem="berita" v-on:click="handle"></list-item>
+        <div v-for="(berita, index) in beritafeeds" v-on:click="navigasiHalamanDetail(berita, index)">
+            <list-item v-bind:propsArtikelItem="berita"></list-item>
         </div>
     </div>
 </div>

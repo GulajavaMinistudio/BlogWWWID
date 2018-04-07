@@ -66,14 +66,18 @@ export default {
     },
     getDetailBeritaCached() {
       this.artikelModel = this.beritafeeds[this.idberita];
-      console.log(this.artikelModel);
+      this.$refs.content_detail.innerHTML = this.artikelModel.content;
     },
   },
   computed: {
 
   },
   mounted() {
+    // cek status local storage apakah kompatibel atau tidak
+    this.localstorageHelper.checkLocalStorageCompatible();
+    // ambil data dari router dan cache
     this.idberita = this.$route.params.idberita;
     this.judulhalaman = this.$route.params.judulhalaman;
+    this.getBeritaCached();
   },
 };

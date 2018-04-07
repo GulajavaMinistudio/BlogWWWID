@@ -201,8 +201,9 @@ export default {
           this.getBeritaFeeds();
         });
     },
-    navigasiHalamanDetail(artikelmodel) {
-
+    navigasiHalamanDetail(artikelmodel, indeks) {
+      const judulArtikel = artikelmodel.title;
+      this.$router.push({ name: 'BeritaDetail', params: { idberita: indeks, judulhalaman: judulArtikel } });
     },
   },
   computed: {
