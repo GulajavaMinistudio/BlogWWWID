@@ -136,7 +136,7 @@ export default {
     simpanFeedKategori() {
       const simpanKategoriPromised = new Promise((resolve) => {
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_TAG_CATEGORY,
-          this.listKategoriArtikel);
+          JSON.stringify(this.listKategoriArtikel));
         resolve(true);
       });
 
@@ -156,7 +156,7 @@ export default {
 
       getDataKategoriPromised
         .then((listkategori) => {
-          this.listKategoriArtikel = listkategori;
+          this.listKategoriArtikel = JSON.parse(listkategori);
         })
         .catch((err) => {
           console.log(err);
