@@ -150,13 +150,15 @@ export default {
     },
     getFeedKategoriCached() {
       const getDataKategoriPromised = new Promise((resolve) => {
-        const listKategoriCache = this.localstorageHelper.getDataWithKey(KEY_STORAGE_TAG_CATEGORY);
+        const listKategoriCacheString = this.localstorageHelper
+          .getDataWithKey(KEY_STORAGE_TAG_CATEGORY);
+        const listKategoriCache = JSON.parse(listKategoriCacheString);
         resolve(listKategoriCache);
       });
 
       getDataKategoriPromised
         .then((listkategori) => {
-          this.listKategoriArtikel = JSON.parse(listkategori);
+          this.listKategoriArtikel = listkategori;
         })
         .catch((err) => {
           console.log(err);

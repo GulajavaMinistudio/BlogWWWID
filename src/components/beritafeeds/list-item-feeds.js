@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       artikelItem: this.propsArtikelItem,
+      linkGambar: '',
     };
   },
   methods: {
@@ -30,6 +31,6 @@ export default {
     },
   },
   mounted() {
-
+    this.linkGambar = this.propsArtikelItem.thumbnail;
   },
 };
