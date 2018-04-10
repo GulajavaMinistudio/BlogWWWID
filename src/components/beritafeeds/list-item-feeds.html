@@ -1,4 +1,9 @@
 <div>
+    <div class="container-gambar">
+        <a v-bind:href="linkGambar" class="full progressive replace">
+            <img src="assets/logo.png" alt="image" class="preview">
+        </a>
+    </div>
     <h3>{{artikelItem.title}}</h3>
     <div>{{artikelItem.description | snippetFilter}}</div>
     <p>{{artikelItem.pubDate}}</p>

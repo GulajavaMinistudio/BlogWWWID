@@ -136,7 +136,7 @@ export default {
     simpanFeedKategori() {
       const simpanKategoriPromised = new Promise((resolve) => {
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_TAG_CATEGORY,
-          this.listKategoriArtikel);
+          JSON.stringify(this.listKategoriArtikel));
         resolve(true);
       });
 
@@ -150,7 +150,9 @@ export default {
     },
     getFeedKategoriCached() {
       const getDataKategoriPromised = new Promise((resolve) => {
-        const listKategoriCache = this.localstorageHelper.getDataWithKey(KEY_STORAGE_TAG_CATEGORY);
+        const listKategoriCacheString = this.localstorageHelper
+          .getDataWithKey(KEY_STORAGE_TAG_CATEGORY);
+        const listKategoriCache = JSON.parse(listKategoriCacheString);
         resolve(listKategoriCache);
       });
 
@@ -201,8 +203,9 @@ export default {
           this.getBeritaFeeds();
         });
     },
-    navigasiHalamanDetail(artikelmodel) {
-
+    navigasiHalamanDetail(artikelmodel, indeks) {
+      const judulArtikel = artikelmodel.title;
+      this.$router.push({ name: 'BeritaDetail', params: { idberita: indeks, judulhalaman: judulArtikel } });
     },
   },
   computed: {
