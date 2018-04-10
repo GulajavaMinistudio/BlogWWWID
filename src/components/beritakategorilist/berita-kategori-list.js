@@ -10,8 +10,13 @@ import {
   BATAS_CACHE_5MENIT, KEY_MILIS_WAKTU_DISIMPAN,
 } from '@/components/konstans/Konstans';
 
+const HeaderWebDetail = () => import(/* webpackChunkName: "header-halaman-kategori" */'@/components/sharedscomponent/HeaderWeb');
+
 export default {
   name: 'BeritaKategoriList',
+  components: {
+    'header-web': HeaderWebDetail,
+  },
   data() {
     return {
       beritafeeds: [],
