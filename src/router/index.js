@@ -9,6 +9,8 @@ const BeritaDetail = () => import(/* webpackChunkName: "detail-berita" */'@/comp
 
 const KategoriBerita = () => import(/* webpackChunkName: "daftar-kategori-berita" */'@/components/beritakategorilist/BeritaKategoriList');
 
+const BeritaFeedKategori = () => import(/* webpackChunkName: "daftar-berita-dengan-kategori" */'@/components/beritafeedskategori/BeritaFeedsKategori');
+
 const baseRouter = [
   {
     path: '/',
@@ -24,6 +26,11 @@ const baseRouter = [
     path: '/daftar-kategori-berita',
     name: 'BeritaKategoriList',
     component: KategoriBerita,
+  },
+  {
+    path: '/berita-kategori/:idkategori',
+    name: 'BeritaDenganKategori',
+    component: BeritaFeedKategori,
   },
   {
     path: '*',
