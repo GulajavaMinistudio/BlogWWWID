@@ -56,8 +56,7 @@ export default {
       promiseGetBeritaCached
         .then((beritacached) => {
           if (beritacached && beritacached.length > 0) {
-            this.beritafeeds = beritacached;
-            this.getCekWaktuCached();
+            this.filterBeritaDenganKategoriPilihan(beritacached);
           } else {
             this.getBeritaFeeds();
           }
@@ -70,10 +69,39 @@ export default {
     /**
      * Kelompokkan berita menurut kategori yang telah dipilih di halaman sebelumnya
      */
-    filterBeritaDenganKategoriPilihan() {
+    filterBeritaDenganKategoriPilihan(arraymentah) {
       // cari berita menurut tipe kategorinya.
       // dengan membandingkan kategori di router params nya dengan
       // array kategori yang ada di masing masing berita
+      const promisedFilter = new Promise((resolve) => {
+        const filterArrayKategori = arraymentah.filter((valueobject) => {
+          let isKategoriAda = false;
+          const kategoriArray = valueobject.categories;
+          const panjangKategori = kategoriArray.length;
+          for (let i = 0; i < panjangKategori; i += 1) {
+            const namakategoriCek = kategoriArray[i].toString().toLowerCase().trim();
+            if (this.namaKategori === namakategoriCek) {
+              isKategoriAda = true;
+              break;
+            } else {
+              isKategoriAda = false;
+            }
+          }
+          return isKategoriAda;
+        });
+        resolve(filterArrayKategori);
+      });
+
+      promisedFilter.then((arrayfiltered) => {
+        if (arrayfiltered && arrayfiltered.length > 0) {
+          this.beritafeeds = arrayfiltered;
+        } else {
+          this.beritafeeds = [];
+        }
+        this.getCekWaktuCached();
+      }).catch((err) => {
+        console.log(err);
+      });
     },
     /**
      * Ambil daftar berita dari server Medium WWWID

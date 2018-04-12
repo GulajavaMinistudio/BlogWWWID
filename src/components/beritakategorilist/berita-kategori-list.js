@@ -139,8 +139,8 @@ export default {
     navigasiBalikHalaman() {
 
     },
-    navigasiDaftarBeritaKategori() {
-
+    navigasiDaftarBeritaKategori(value) {
+      this.$router.push({ name: 'BeritaDenganKategori', params: { idkategori: value } });
     },
   },
   computed: {

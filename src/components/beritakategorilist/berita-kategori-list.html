@@ -5,7 +5,7 @@
     </div>
     <!-- Daftar kategori halaman -->
     <div>
-        <div v-for="kategori in listKategoriArtikel">
+        <div v-for="kategori in listKategoriArtikel" v-on:click="navigasiDaftarBeritaKategori(kategori)">
             <p>{{kategori}}</p>
         </div>
     </div>
