@@ -19,7 +19,6 @@ const HeaderComponent = () => import(/* webpackChunkName: "header-halaman-blog-f
 // jika berita di cache kosong, maka ambil dari internet
 // kemudian simpan ke cache
 // dan ambil dari cache lagi
-
 export default {
   name: 'BeritaFeedComponent',
   components: {
