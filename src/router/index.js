@@ -11,6 +11,8 @@ const KategoriBerita = () => import(/* webpackChunkName: "daftar-kategori-berita
 
 const BeritaFeedKategori = () => import(/* webpackChunkName: "daftar-berita-dengan-kategori" */'@/components/beritafeedskategori/BeritaFeedsKategori');
 
+const TentangAplikasi = () => import(/* webpackChunkName: "tentang-aplikasi-web" */'@/components/aboutapp/TentangApp');
+
 const baseRouter = [
   {
     path: '/',
@@ -31,6 +33,11 @@ const baseRouter = [
     path: '/berita-kategori/:idkategori',
     name: 'BeritaDenganKategori',
     component: BeritaFeedKategori,
+  },
+  {
+    path: '/tentang-aplikasi',
+    name: 'TentangAplikasiWeb',
+    component: TentangAplikasi,
   },
   {
     path: '*',

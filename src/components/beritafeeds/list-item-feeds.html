@@ -1,10 +1,31 @@
 <div>
-    <div class="container-gambar">
-        <a v-bind:href="linkGambar" class="full progressive replace">
-            <img src="assets/logo.png" alt="image" class="preview">
-        </a>
+    <div class="ui container">
+        <div class="ui raised segment">
+            <div class="ui divided items">
+                <div class="item">
+                    <div class="ui medium rounded image container-gambar">
+                        <!-- <img src="@/assets/logo.png"> -->
+                        <a v-bind:href="linkGambar" class="full progressive replace">
+                            <img src="assets/logo_net.png" alt="image" class="preview">
+                        </a>
+                    </div>
+                    <div class="middle aligned content">
+                        <a class="header">{{artikelItem.title}}</a>
+                        <div class="meta">
+                            <span class="cinema">{{artikelItem.pubDate}}</span>
+                        </div>
+                        <div class="description">
+                            <p>{{artikelItem.description | snippetFilter}}</p>
+                        </div>
+                        <div class="extra">
+                            <div class="ui label" v-for="kategori in categoryartikel">
+                                <i class="comments icon"></i>
+                                {{kategori}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <h3>{{artikelItem.title}}</h3>
-    <div>{{artikelItem.description | snippetFilter}}</div>
-    <p>{{artikelItem.pubDate}}</p>
 </div>
