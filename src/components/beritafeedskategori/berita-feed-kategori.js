@@ -153,6 +153,8 @@ export default {
     },
     simpanFeedBerita() {
       const promiseSaveBerita = new Promise((resolve) => {
+        this.localstorageHelper.removeDataWithKey(KEY_STORAGE_FEEDS);
+        this.localstorageHelper.removeDataWithKey(KEY_STORAGE_BERITAFEEDMODEL);
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_FEEDS,
           JSON.stringify(this.beritafeeds));
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_BERITAFEEDMODEL,
@@ -171,6 +173,7 @@ export default {
     },
     simpanFeedKategori() {
       const simpanKategoriPromised = new Promise((resolve) => {
+        this.localstorageHelper.removeDataWithKey(KEY_STORAGE_TAG_CATEGORY);
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_TAG_CATEGORY,
           JSON.stringify(this.listKategoriArtikel));
         resolve(true);
@@ -203,6 +206,7 @@ export default {
     simpanWaktuCached() {
       const saveWaktuPromised = new Promise((resolve) => {
         const tanggalWaktu = new Date().getTime();
+        this.localstorageHelper.removeDataWithKey(KEY_MILIS_WAKTU_DISIMPAN);
         this.localstorageHelper.addDataLocalStorage(KEY_MILIS_WAKTU_DISIMPAN,
           tanggalWaktu.toString());
         resolve('true');

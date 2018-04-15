@@ -29,6 +29,10 @@ export default {
       localstorageHelper: new LocalStorageHelpers(),
       parserDaftarArtikel: new ParserDaftarArtikel(),
       parserKategori: new ParserKategori(),
+      rawhtml: '',
+      judulArtikel: '',
+      penulis: '',
+      pubDate: '',
     };
   },
   methods: {
@@ -102,6 +106,8 @@ export default {
     },
     simpanFeedBerita() {
       const promiseSaveBerita = new Promise((resolve) => {
+        this.localstorageHelper.removeDataWithKey(KEY_STORAGE_FEEDS);
+        this.localstorageHelper.removeDataWithKey(KEY_STORAGE_BERITAFEEDMODEL);
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_FEEDS,
           JSON.stringify(this.beritafeeds));
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_BERITAFEEDMODEL,
@@ -120,6 +126,7 @@ export default {
     },
     simpanFeedKategoriBerita() {
       const simpanKategoriPromised = new Promise((resolve) => {
+        this.localstorageHelper.removeDataWithKey(KEY_STORAGE_TAG_CATEGORY);
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_TAG_CATEGORY,
           JSON.stringify(this.listKategoriArtikel));
         resolve(true);
@@ -147,21 +154,31 @@ export default {
         // jika artikel model benar didapat dan bukan
         // undefined
         if (this.artikelModel) {
-          this.$refs.content_detail.innerHTML = this.artikelModel.content;
+          // this.$refs.content_detail.innerHTML = this.artikelModel.content;
+          // const elementId = document.getElementById('content_detail');
+          // elementId.innerHTML = this.artikelModel.content;
+          this.rawhtml = this.artikelModel.content;
+          this.judulArtikel = this.artikelModel.title;
+          this.penulis = this.artikelModel.author;
+          this.pubDate = this.artikelModel.pubDate;
+          this.applyStyleJquery();
           this.getCekWaktuCached();
         } else {
           // navigasi balik ke halaman utama
+          this.navigasiBalikHalamanUtama();
         }
       })
         .catch((err) => {
           console.log(err);
           // error karena daftar berita salah atau url salah
           // navigasi balik ke halaman utama
+          this.navigasiBalikHalamanUtama();
         });
     },
     simpanWaktuCached() {
       const saveWaktuPromised = new Promise((resolve) => {
         const tanggalWaktu = new Date().getTime();
+        this.localstorageHelper.removeDataWithKey(KEY_MILIS_WAKTU_DISIMPAN);
         this.localstorageHelper.addDataLocalStorage(KEY_MILIS_WAKTU_DISIMPAN,
           tanggalWaktu.toString());
         resolve('true');
@@ -199,7 +216,12 @@ export default {
         });
     },
     navigasiBalikHalamanUtama() {
-
+      this.$route.push({ name: 'BeritaFeeds' });
+    },
+    applyStyleJquery() {
+      setTimeout(() => {
+        $('figure img').addClass('responsive-img');
+      }, 1500);
     },
   },
   computed: {

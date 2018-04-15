@@ -1,0 +1,37 @@
+.ui.message:last-child {
+    margin-bottom: 1em;
+}
+
+.ui.message:first-child {
+    margin-top: 1em;
+}
+
+.judul-style {
+    color: #404B69;
+    text-align: center;
+}
+
+.subjudul-style {
+    color: #606470;
+    font-size: 12pt;
+    font-style: italic;
+}
+
+figcaption {
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+    color: #606470;
+    margin-top: 8px;
+}
+
+.responsive-img {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    height: auto;
+}
+
+p {
+    font-size: 11pt;
+}
