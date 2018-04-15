@@ -1,0 +1,17 @@
+.border-radius-header {
+    border-radius: 0px;
+}
+
+.ui.segment {
+    padding: 0.2em 0.2em;
+}
+
+.ui.inverted.segment, .ui.primary.inverted.segment {
+    background: #00BBF0;
+    color: rgba(255,255,255,.9);
+}
+
+.ui.menu {
+    font-size: 11pt;
+    font-weight: bold;
+}

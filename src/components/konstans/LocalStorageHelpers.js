@@ -108,7 +108,7 @@ class LocalStorageHelpers {
      * */
     removeDataWithKey(keyData = '') {
       if (this.isLocalStorageSupported && keyData.length > 0) {
-        this.getLocalStorage().remove(keyData);
+        this.getLocalStorage().removeItem(keyData);
       }
     }
 

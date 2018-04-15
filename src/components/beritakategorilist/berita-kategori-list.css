@@ -1,0 +1,8 @@
+.ui.message:first-child {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.margin-top-list {
+    margin-top: 0.5em;
+}

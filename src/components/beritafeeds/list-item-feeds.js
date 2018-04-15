@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       artikelItem: this.propsArtikelItem,
+      categoryartikel: this.propsArtikelItem.categories,
       linkGambar: '',
     };
   },
@@ -26,7 +27,7 @@ export default {
   },
   filters: {
     snippetFilter(value) {
-      const slicedDesc = `${value.toString().slice(0, 100)}...`;
+      const slicedDesc = `${value.toString().slice(0, 300)}...`;
       return slicedDesc;
     },
   },

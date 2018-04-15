@@ -10,58 +10,105 @@ import {
   BATAS_CACHE_5MENIT, KEY_MILIS_WAKTU_DISIMPAN,
 } from '@/components/konstans/Konstans';
 
-const HeaderDetailWeb = () => import(/* webpackChunkName: "header-detail-web" */'@/components/sharedscomponent/HeaderWebDetail');
+// import komponen untuk list artikel
+const ListItemComponent = () => import(/* webpackChunkName: "list-item-artikel-kategori" */'@/components/beritafeeds/ListItemFeeds');
 
+const HeaderComponent = () => import(/* webpackChunkName: "header-halaman-blog-feed-kategori" */'@/components/sharedscomponent/HeaderWeb');
+
+// ambil berita dari cache terlebih dahulu
+// jika berita di cache kosong, maka ambil dari internet
+// kemudian simpan ke cache
+// dan ambil dari cache lagi
 export default {
-  name: 'DetailBeritaComponent',
+  name: 'BeritaFeedComponent',
   components: {
-    'header-detail': HeaderDetailWeb,
+    'list-item': ListItemComponent,
+    'header-web': HeaderComponent,
   },
   data() {
     return {
-      idberita: this.$route.params.idberita,
-      judulhalaman: this.$route.params.judulhalaman,
-      artikelModel: {},
+      namaKategori: this.$route.params.idkategori,
       beritafeeds: [],
       beritafeedscache: [],
-      listKategoriArtikel: [],
+      isShowProgress: false,
       beritaFeedModel: new BeritaFeedsModel(),
+      listKategoriArtikel: [],
       localstorageHelper: new LocalStorageHelpers(),
       parserDaftarArtikel: new ParserDaftarArtikel(),
       parserKategori: new ParserKategori(),
-      rawhtml: '',
-      judulArtikel: '',
-      penulis: '',
-      pubDate: '',
     };
   },
   methods: {
-    getBeritaCached() {
+    /**
+     * Ambil daftar berita yang tersimpan di dalam cache
+     */
+    getFeedBeritaCached() {
       const promiseGetBeritaCached = new Promise((resolve) => {
+        const beritacacheString = this.localstorageHelper.getDataWithKey(KEY_STORAGE_FEEDS);
+        const beritacache = JSON.parse(beritacacheString);
         const beritaFeedModelString = this.localstorageHelper
           .getDataWithKey(KEY_STORAGE_BERITAFEEDMODEL);
-        const beritamodel = JSON.parse(beritaFeedModelString);
-        resolve(beritamodel);
+        this.beritaFeedModel = JSON.parse(beritaFeedModelString);
+        resolve(beritacache);
       });
 
-      promiseGetBeritaCached.then((beritamodel) => {
-        if (beritamodel) {
-          this.beritaFeedModel = beritamodel;
-          this.beritafeeds = this.beritaFeedModel.items;
-          this.getDetailBeritaCached();
-        } else {
-          this.getDaftarBerita();
-        }
-      })
+      promiseGetBeritaCached
+        .then((beritacached) => {
+          if (beritacached && beritacached.length > 0) {
+            this.filterBeritaDenganKategoriPilihan(beritacached);
+          } else {
+            this.getBeritaFeeds();
+          }
+        })
         .catch((err) => {
           console.log(err);
-          this.getDaftarBerita();
+          this.getBeritaFeeds();
         });
     },
-    getDaftarBerita() {
-      // karena data cache kosong, maka ambil daftar berita
-      const urlberita = BASE_URLS + PARAM_REQUEST_FEEDS;
-      axios.get(urlberita)
+    /**
+     * Kelompokkan berita menurut kategori yang telah dipilih di halaman sebelumnya
+     */
+    filterBeritaDenganKategoriPilihan(arraymentah) {
+      // cari berita menurut tipe kategorinya.
+      // dengan membandingkan kategori di router params nya dengan
+      // array kategori yang ada di masing masing berita
+      const promisedFilter = new Promise((resolve) => {
+        const filterArrayKategori = arraymentah.filter((valueobject) => {
+          let isKategoriAda = false;
+          const kategoriArray = valueobject.categories;
+          const panjangKategori = kategoriArray.length;
+          for (let i = 0; i < panjangKategori; i += 1) {
+            const namakategoriCek = kategoriArray[i].toString().toLowerCase().trim();
+            if (this.namaKategori === namakategoriCek) {
+              isKategoriAda = true;
+              break;
+            } else {
+              isKategoriAda = false;
+            }
+          }
+          return isKategoriAda;
+        });
+        resolve(filterArrayKategori);
+      });
+
+      promisedFilter.then((arrayfiltered) => {
+        if (arrayfiltered && arrayfiltered.length > 0) {
+          this.beritafeeds = arrayfiltered;
+        } else {
+          this.beritafeeds = [];
+        }
+        this.getCekWaktuCached();
+      }).catch((err) => {
+        console.log(err);
+      });
+    },
+    /**
+     * Ambil daftar berita dari server Medium WWWID
+     */
+    getBeritaFeeds() {
+      // ambil data feed medium dari server
+      const urlBerita = BASE_URLS + PARAM_REQUEST_FEEDS;
+      axios.get(urlBerita)
         .then(resp => new Promise((resolve) => {
           const datajson = resp.data;
           const feeds = datajson.feed;
@@ -83,8 +130,8 @@ export default {
         .then(() => {
           this.cekHasilGetBerita();
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
           this.listKategoriArtikel = [];
           this.beritafeeds = [];
           this.cekHasilGetBerita();
@@ -92,7 +139,7 @@ export default {
     },
     cekHasilGetBerita() {
       if (this.listKategoriArtikel && this.listKategoriArtikel.length > 0) {
-        this.simpanFeedKategoriBerita();
+        this.simpanFeedKategori();
       } else {
         this.getFeedKategoriCached();
       }
@@ -124,7 +171,7 @@ export default {
           console.log(err);
         });
     },
-    simpanFeedKategoriBerita() {
+    simpanFeedKategori() {
       const simpanKategoriPromised = new Promise((resolve) => {
         this.localstorageHelper.removeDataWithKey(KEY_STORAGE_TAG_CATEGORY);
         this.localstorageHelper.addDataLocalStorage(KEY_STORAGE_TAG_CATEGORY,
@@ -140,39 +187,20 @@ export default {
           console.log(err);
         });
     },
-    getDetailBeritaCached() {
-      // gunakan filter untuk mencari berita pertama sesuai judulnya
-      const promiseFilter = new Promise((resolve) => {
-        const arrayBeritaCocok = this.beritafeeds.filter(valueindex =>
-          this.judulhalaman === valueindex.title);
-        const artikelModel = arrayBeritaCocok[0];
-        resolve(artikelModel);
+    getFeedKategoriCached() {
+      const getDataKategoriPromised = new Promise((resolve) => {
+        const listKategoriCacheString = this.localstorageHelper
+          .getDataWithKey(KEY_STORAGE_TAG_CATEGORY);
+        const listKategoriCache = JSON.parse(listKategoriCacheString);
+        resolve(listKategoriCache);
       });
 
-      promiseFilter.then((artikel) => {
-        this.artikelModel = artikel;
-        // jika artikel model benar didapat dan bukan
-        // undefined
-        if (this.artikelModel) {
-          // this.$refs.content_detail.innerHTML = this.artikelModel.content;
-          // const elementId = document.getElementById('content_detail');
-          // elementId.innerHTML = this.artikelModel.content;
-          this.rawhtml = this.artikelModel.content;
-          this.judulArtikel = this.artikelModel.title;
-          this.penulis = this.artikelModel.author;
-          this.pubDate = this.artikelModel.pubDate;
-          this.applyStyleJquery();
-          this.getCekWaktuCached();
-        } else {
-          // navigasi balik ke halaman utama
-          this.navigasiBalikHalamanUtama();
-        }
-      })
+      getDataKategoriPromised
+        .then((listkategori) => {
+          this.listKategoriArtikel = listkategori;
+        })
         .catch((err) => {
           console.log(err);
-          // error karena daftar berita salah atau url salah
-          // navigasi balik ke halaman utama
-          this.navigasiBalikHalamanUtama();
         });
     },
     simpanWaktuCached() {
@@ -207,32 +235,28 @@ export default {
         const waktuSelisih = waktuSekarang - waktuCache;
         if (waktuSelisih > BATAS_CACHE_5MENIT) {
           console.log('cache sudah lebih dari 5 menit');
-          this.getDaftarBerita();
+          this.getBeritaFeeds();
         }
       })
         .catch((error) => {
           console.log(error);
-          this.getDaftarBerita();
+          this.getBeritaFeeds();
         });
     },
-    navigasiBalikHalamanUtama() {
-      this.$route.push({ name: 'BeritaFeeds' });
-    },
-    applyStyleJquery() {
-      setTimeout(() => {
-        $('figure img').addClass('responsive-img');
-      }, 1500);
+    navigasiHalamanDetail(artikelmodel, indeks) {
+      const judulArtikel = artikelmodel.title;
+      this.$router.push({ name: 'BeritaDetail', params: { idberita: indeks, judulhalaman: judulArtikel } });
     },
   },
   computed: {
 
   },
   mounted() {
+    // ambil data parameter dari router
+    this.namaKategori = this.$route.params.idkategori.toString().toLowerCase();
     // cek status local storage apakah kompatibel atau tidak
     this.localstorageHelper.checkLocalStorageCompatible();
-    // ambil data dari router dan cache
-    this.idberita = this.$route.params.idberita;
-    this.judulhalaman = this.$route.params.judulhalaman;
-    this.getBeritaCached();
+    // ambil data dari server
+    this.getFeedBeritaCached();
   },
 };

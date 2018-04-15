@@ -13,3 +13,7 @@
     width: 300px;
     height: auto;
 }
+
+.ui.segment:last-child {
+    margin-bottom: 1.3em;
+}

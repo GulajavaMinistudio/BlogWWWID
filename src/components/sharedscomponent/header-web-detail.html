@@ -1,10 +1,14 @@
 <div>
-    Header Detail disini
-    <ul>
-        <li>
-            <a>
-                <router-link v-bind:to="{name: 'BeritaFeeds'}">Beranda</router-link>
-            </a>
-        </li>
-    </ul>
+    <div class="ui inverted segment border-radius-header">
+        <div class="ui container">
+            <div class="ui inverted secondary menu">
+                <a class="header item" href="/">
+                    <img class="logo" src="@/assets/logo_net.png">
+                </a>
+                <a class="item">
+                    <router-link v-bind:to="{name: 'BeritaFeeds'}" exact>Beranda</router-link>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

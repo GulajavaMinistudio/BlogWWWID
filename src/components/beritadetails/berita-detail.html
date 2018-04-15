@@ -2,7 +2,11 @@
     <!-- header berita -->
     <header-detail></header-detail>
     <!-- detail berita -->
-    <div ref="content_detail">
-        
+    <div class="ui container">
+        <div class="ui floating message">
+            <h2 class="judul-style">{{judulArtikel}}</h2>
+            <h3 class="subjudul-style">{{penulis}}, {{pubDate}}</h3>
+            <div ref="content_detail" v-html="rawhtml"></div>
+        </div>
     </div>
 </div>

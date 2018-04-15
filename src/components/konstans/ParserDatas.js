@@ -72,7 +72,16 @@ class ParserKategori {
     }
 
     const listkategoriurut = listkategorimentah.sort(
-      (nilaiA, nilaiB) => nilaiA - nilaiB,
+      (nilaiA, nilaiB) => {
+        // urutkan secara ascending
+        if (nilaiA < nilaiB) {
+          return -1;
+        }
+        if (nilaiA > nilaiB) {
+          return 1;
+        }
+        return 0;
+      },
     );
 
     // dengan reduce dan filter
