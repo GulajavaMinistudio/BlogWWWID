@@ -15,6 +15,8 @@ const ListItemComponent = () => import(/* webpackChunkName: "list-item-artikel" 
 
 const HeaderComponent = () => import(/* webpackChunkName: "header-halaman-blog-feed" */'@/components/sharedscomponent/HeaderWeb');
 
+const ProgressBarComponent = () => import(/* webpackChunkName: "progress-bar-home" */'@/components/sharedscomponent/ProgressBarComponent');
+
 // ambil berita dari cache terlebih dahulu
 // jika berita di cache kosong, maka ambil dari internet
 // kemudian simpan ke cache
@@ -25,6 +27,7 @@ export default {
   components: {
     'list-item': ListItemComponent,
     'header-web': HeaderComponent,
+    progressbar: ProgressBarComponent,
   },
   data() {
     return {
@@ -43,6 +46,7 @@ export default {
      * Ambil daftar berita yang tersimpan di dalam cache
      */
     getFeedBeritaCached() {
+      this.showProgressBar(true);
       const promiseGetBeritaCached = new Promise((resolve) => {
         const beritacacheString = this.localstorageHelper.getDataWithKey(KEY_STORAGE_FEEDS);
         const beritacache = JSON.parse(beritacacheString);
@@ -57,6 +61,7 @@ export default {
           if (beritacached && beritacached.length > 0) {
             this.beritafeeds = beritacached;
             this.getCekWaktuCached();
+            this.showProgressBar(false);
           } else {
             this.getBeritaFeeds();
           }
@@ -64,12 +69,14 @@ export default {
         .catch((err) => {
           console.log(err);
           this.getBeritaFeeds();
+          this.showProgressBar(false);
         });
     },
     /**
      * Ambil daftar berita dari server Medium WWWID
      */
     getBeritaFeeds() {
+      this.showProgressBar(true);
       // ambil data feed medium dari server
       const urlBerita = BASE_URLS + PARAM_REQUEST_FEEDS;
       axios.get(urlBerita)
@@ -99,6 +106,7 @@ export default {
           this.listKategoriArtikel = [];
           this.beritafeeds = [];
           this.cekHasilGetBerita();
+          this.showProgressBar(false);
         });
     },
     cekHasilGetBerita() {
@@ -114,6 +122,7 @@ export default {
       } else {
         this.getFeedBeritaCached();
       }
+      this.showProgressBar(false);
     },
     simpanFeedBerita() {
       const promiseSaveBerita = new Promise((resolve) => {
@@ -210,6 +219,9 @@ export default {
     navigasiHalamanDetail(artikelmodel, indeks) {
       const judulArtikel = artikelmodel.title;
       this.$router.push({ name: 'BeritaDetail', params: { idberita: indeks, judulhalaman: judulArtikel } });
+    },
+    showProgressBar(isShowed) {
+      this.isShowProgress = isShowed;
     },
   },
   computed: {

@@ -1,6 +1,11 @@
-# blog-wwwid-indonesia
+# Aplikasi Web WWWID Indonesia
 
-> Aplikasi web sederhana yang berisi blog WWWID newsletter
+> Aplikasi sederhana yang berisi daftar berita dari RSS milik situs blog Medium WWWID Indonesia https://medium.com/wwwid
+
+## Tentang Aplikasi
+
+Aplikasi yang berisi umpan berita RSS dari situs Medium WWWID Indonesia. Aplikasi ini merupakan aplikasi hasil pembelajaran dalam penggunaan JavaScript ES2015+ , Framework VueJS, dan library CSS Semantic UI.
+
 
 ## Build Setup
 
