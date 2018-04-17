@@ -2,6 +2,9 @@
     <div>
         <header-web></header-web>
     </div>
+    <div v-if="isShowProgress">
+        <progressbar></progressbar>
+    </div>
     <div class="padding-list">
         <div v-for="(berita, index) in beritafeeds" v-on:click="navigasiHalamanDetail(berita, index)">
             <list-item v-bind:propsArtikelItem="berita"></list-item>
