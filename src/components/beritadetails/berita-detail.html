@@ -7,6 +7,16 @@
             <h2 class="judul-style">{{judulArtikel}}</h2>
             <h3 class="subjudul-style">{{penulis}}, {{pubDate}}</h3>
             <div ref="content_detail" v-html="rawhtml"></div>
+            <br>
+            <div class="tombol-situs-asli">
+                <div class="ui blue animated button" tabindex="0" v-on:click="navigasiHalamanAsli()">
+                    <div class="visible content">Lihat Berita di Situs Asli</div>
+                    <div class="hidden content">
+                        <i class="right arrow icon"></i>
+                        Buka Halaman
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

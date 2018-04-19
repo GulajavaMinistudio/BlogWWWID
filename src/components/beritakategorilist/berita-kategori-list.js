@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { LocalStorageHelpers } from '@/components/konstans/LocalStorageHelpers';
 import BeritaFeedsModel from '@/components/models/BeritaFeedsModel';
 import FeedItem from '@/components/models/FeedItem';
@@ -9,6 +9,7 @@ import {
   KEY_STORAGE_BERITAFEEDMODEL,
   BATAS_CACHE_5MENIT, KEY_MILIS_WAKTU_DISIMPAN,
 } from '@/components/konstans/Konstans';
+import axios from '../../../node_modules/axios/dist/axios.min';
 
 const HeaderWebDetail = () => import(/* webpackChunkName: "header-halaman-kategori" */'@/components/sharedscomponent/HeaderWeb');
 
