@@ -12,7 +12,9 @@
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js",
-    "lintfix": "npm run lint -- --fix"
+    "lintfix": "npm run lint -- --fix",
+    "generateSW": "workbox generateSW workbox-config.js",
+    "liveserver": "cd dist && live-server --port=4200 --host=localhost --entry-file=/index.html"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -63,6 +65,7 @@
     "karma-spec-reporter": "0.0.31",
     "karma-webpack": "^2.0.2",
     "lazysizes": "^4.0.2",
+    "live-server": "^1.2.0",
     "mocha": "^3.2.0",
     "moment": "^2.22.0",
     "nightwatch": "^0.9.12",
