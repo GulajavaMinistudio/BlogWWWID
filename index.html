@@ -3,32 +3,42 @@
 
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>WWWID Indonesia Blog</title>
+  <title>Blog WWWID PWA</title>
+  <meta name="description" content="Aplikasi yang berisi umpan berita dari situs Medium WWWID Indonesia." />
+
   <!-- GUNAKAN CDN JIKA AKAN MEMBUAT MODE PRODUKSI -->
   <link rel="shortcut icon" href="./static/favicon.ico" type="image/x-icon">
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css" as="style" crossorigin="anonymous" onload="this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@3.6.1/animate.min.css" as="style" crossorigin="anonymous"
+    onload="this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css" as="style" crossorigin="anonymous"
+    onload="this.rel='stylesheet'">
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js" defer></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/moment@2.22.1/min/moment-with-locales.min.js" defer></script> -->
+
+  <!-- setelan untuk pwa -->
+  <meta name="theme-color" content="#03a9f4">
+
 </head>
+
 <body>
+  <noscript>
+    Aktifkan fungsi JavaScript di dalam browser internet yang anda pakai...
+  </noscript>
   <div id="app"></div>
   <!-- built files will be auto injected -->
-</body>
-<style type="text/css">
-  body {
-    background: #f2f2f2;
-  }
-</style>
-<script>
-  // Check that service workers are registered
-  if ('serviceWorker' in navigator) {
-    // Use the window load event to keep the page load performant
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/static/sw.js');
-    });
-  }
+  <script>
+    // Check that service workers are registered
+    if ('serviceWorker' in navigator) {
+      // Use the window load event to keep the page load performant
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
   </script>
+</body>
+
 </html>
