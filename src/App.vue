@@ -1,14 +1,3 @@
-<template>
-  <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
-    <router-view/>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'App',
-};
-</script>
-
-<style scoped src="./appvue.css"></style>
+<template src="./appvue.html"></template>
+<script src="./appvue.js"></script>
+<style src="./appvue.css"></style>

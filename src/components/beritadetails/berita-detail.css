@@ -35,3 +35,8 @@ figcaption {
 p {
     font-size: 11pt;
 }
+
+.tombol-situs-asli {
+    text-align: center;
+    margin-top: 1em;
+}

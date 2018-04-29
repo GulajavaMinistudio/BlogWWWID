@@ -15,3 +15,9 @@
     font-size: 11pt;
     font-weight: bold;
 }
+
+.ui.inverted.menu .item, .ui.inverted.menu .item>a:not(.ui) {
+  background: 0 0;
+  color: white;
+  font-weight: bold;
+}

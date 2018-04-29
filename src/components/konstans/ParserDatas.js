@@ -1,4 +1,7 @@
-import moment from 'moment';
+// import moment from 'moment';
+import parsedate from 'date-fns/parse';
+import formatdate from 'date-fns/format';
+import localeID from 'date-fns/locale/id';
 import ArtikelModel from '@/components/models/ArtikelModel';
 
 class ParserTanggal {
@@ -6,9 +9,13 @@ class ParserTanggal {
 
   parseTanggalKeBaku(valMentah) {
     this.tanggalMentah = valMentah;
+    // ganti moment ke date-fns
     // 2018-02-16 04:13:04
-    const momentMentah = moment(this.tanggalMentah, 'YYYY-MM-DD HH:mm:ss');
-    const stringTanggalBaku = momentMentah.format('HH:mm, dddd DD MMM YYYY');
+    // const momentMentah = moment(this.tanggalMentah, 'YYYY-MM-DD HH:mm:ss');
+    // const stringTanggalBaku = momentMentah.format('HH:mm, dddd DD MMM YYYY');
+    const parsementah = parsedate(this.tanggalMentah, 'YYYY-MM-DD HH:mm:ss');
+    const dateMentah = new Date(parsementah);
+    const stringTanggalBaku = formatdate(dateMentah, 'HH:mm, dddd DD MMM YYYY', { locale: localeID });
     return stringTanggalBaku;
   }
 }

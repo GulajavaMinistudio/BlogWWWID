@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { LocalStorageHelpers } from '@/components/konstans/LocalStorageHelpers';
 import BeritaFeedsModel from '@/components/models/BeritaFeedsModel';
 import FeedItem from '@/components/models/FeedItem';
@@ -9,6 +9,7 @@ import {
   KEY_STORAGE_BERITAFEEDMODEL,
   BATAS_CACHE_5MENIT, KEY_MILIS_WAKTU_DISIMPAN,
 } from '@/components/konstans/Konstans';
+import axios from '../../../node_modules/axios/dist/axios.min';
 
 // import komponen untuk list artikel
 const ListItemComponent = () => import(/* webpackChunkName: "list-item-artikel" */'@/components/beritafeeds/ListItemFeeds');
