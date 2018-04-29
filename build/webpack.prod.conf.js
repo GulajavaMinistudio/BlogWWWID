@@ -133,13 +133,6 @@ const webpackConfig = merge(baseWebpackConfig, {
           urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
           // Apply a cache-first strategy.
           handler: 'cacheFirst',
-          // options: {
-          //   // Only cache 10 images.
-          //   expiration: {
-          //     maxEntries: 100,
-          //     maxAgeSeconds: 36000,
-          //   },
-          // },
         },
       ],
     })
