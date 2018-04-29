@@ -125,24 +125,21 @@ const webpackConfig = merge(baseWebpackConfig, {
       swDest: path.join(config.build.assetsRoot, '/sw.js'),
       precacheManifestFilename: path.join(config.build.assetsSubDirectory, '/precache.[manifestHash].js'),
       // Exclude images from the precache
-      exclude: [/\.(?:png|jpg|jpeg|svg)$/],
-
+      // exclude: [/\.(?:png|jpg|jpeg|svg)$/],
       // Define runtime caching rules.
       runtimeCaching: [
         {
           // Match any request ends with .png, .jpg, .jpeg or .svg.
           urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
-
           // Apply a cache-first strategy.
           handler: 'cacheFirst',
-
-          options: {
-            // Only cache 10 images.
-            expiration: {
-              maxEntries: 10,
-              maxAgeSeconds: 600,
-            },
-          },
+          // options: {
+          //   // Only cache 10 images.
+          //   expiration: {
+          //     maxEntries: 100,
+          //     maxAgeSeconds: 36000,
+          //   },
+          // },
         },
       ],
     })

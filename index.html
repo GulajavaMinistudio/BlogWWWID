@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Blog WWWID PWA</title>
-  <meta name="description" content="Aplikasi yang berisi umpan berita dari situs Medium WWWID Indonesia." />
 
   <!-- GUNAKAN CDN JIKA AKAN MEMBUAT MODE PRODUKSI -->
-  <link rel="shortcut icon" href="./static/favicon.ico" type="image/x-icon">
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@3.6.1/animate.min.css" as="style" crossorigin="anonymous"
     onload="this.rel='stylesheet'">
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css" as="style" crossorigin="anonymous"
@@ -20,7 +17,25 @@
   <script src="https://cdn.jsdelivr.net/npm/moment@2.22.1/min/moment-with-locales.min.js" defer></script> -->
 
   <!-- setelan untuk pwa -->
+  <title>Blog WWWID PWA</title>
+  <meta name="description" content="Aplikasi yang berisi umpan berita dari situs Medium WWWID Indonesia." />
+
   <meta name="theme-color" content="#03a9f4">
+  <link rel="shortcut icon" href="./static/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="./static/img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./static/img/icons/favicon-16x16.png">
+  <link rel="shortcut icon" href="./static/img/icons/favicon.ico">
+  <!-- Add to home screen for Android and modern mobile browsers -->
+  <link rel="manifest" href="./static/manifest.json">
+  <!-- Add to home screen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="blogwwwidpwa">
+  <link rel="apple-touch-icon" href="./static/img/icons/apple-touch-icon-152x152.png">
+  <link rel="mask-icon" href="./static/img/icons/safari-pinned-tab.svg" color="#03a9f4">
+  <!-- Add to home screen for Windows -->
+  <meta name="msapplication-TileImage" content="./static/img/icons/msapplication-icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#03a9f4">
 
 </head>
 
