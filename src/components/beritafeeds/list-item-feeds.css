@@ -1,7 +1,7 @@
 .gambar-cropped {
   display: block;
   max-width: 100%;
-  max-height: 300px;
+  max-height: 200px;
   height: auto;
   width: 300px;
   object-fit: cover;

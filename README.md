@@ -6,6 +6,8 @@
 
 Aplikasi yang berisi umpan berita RSS dari situs Medium WWWID Indonesia. Aplikasi ini merupakan aplikasi hasil pembelajaran dalam penggunaan JavaScript ES2015+ , Framework VueJS, dan library CSS Semantic UI.
 
+Aplikasi ini dapat diakses di https://id-pwablogs.firebaseapp.com/
+
 
 ## Build Setup
 
