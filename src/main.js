@@ -1,5 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+// gunakan CDN jika ingin membuat ke mode produksi, dan beri komentar untuk library
+// yang sebelumnya dimasukkan ke build system untuk development
 // import 'jquery';
 import Vue from 'vue';
 import App from './App';
