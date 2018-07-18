@@ -1,29 +1,30 @@
 <div>
-    <div>
-        <header-web></header-web>
-    </div>
+  <div>
+    <header-web></header-web>
+  </div>
 
-    <div class="ui container">
+  <div class="ui container">
 
-        <!-- Daftar kategori halaman -->
-        <div class="ui floating message padding-top-segment">
-            <div class="header">
-                Kategori Berita
-            </div>
-            <p>Daftar kategori berita yang dikumpulkan dari berita-berita yang telah dipublikasikan. Pilih salah satu untuk melihat daftar berita yang telah dikelompokkan menurut nama kategori.</p>
+    <!-- Daftar kategori halaman -->
+    <div class="ui floating message padding-top-segment">
+      <div class="header">
+        Kategori Berita
+      </div>
+      <p>Daftar kategori berita yang dikumpulkan dari berita-berita yang telah dipublikasikan. Pilih salah satu untuk melihat
+        daftar berita yang telah dikelompokkan menurut nama kategori.</p>
 
-            <!-- DAFTAR KATEGORI -->
-            <div class="ui middle aligned animated list">
-                <div class="item margin-top-list" v-for="kategori in listKategoriArtikel" v-on:click="navigasiDaftarBeritaKategori(kategori)">
-                    <img class="ui avatar image" src="@/assets/ic_category.png">
-                    <div class="content">
-                        <div class="header">{{kategori}}</div>
-                    </div>
-                </div>
-            </div>
+      <!-- DAFTAR KATEGORI -->
+      <div class="ui middle aligned animated list">
+        <div class="item margin-top-list" v-for="kategori in listKategoriArtikel" v-on:click="navigasiDaftarBeritaKategori(kategori)">
+          <img class="ui avatar image" src="@/assets/ic_category.png">
+          <div class="content">
+            <div class="header">{{kategori}}</div>
+          </div>
         </div>
-
+      </div>
     </div>
+
+  </div>
 
 
 </div>
